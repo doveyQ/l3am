@@ -2,7 +2,24 @@
 
 import { motion, AnimatePresence } from 'framer-motion'
 
-const skills = {
+// 1. Define types explicitly to avoid circular references
+type SkillItem = {
+  name: string
+  level: number
+  category: string
+}
+
+type LearningItem = {
+  name: string
+  progress: number
+}
+
+interface SkillsData {
+  current: SkillItem[]
+  learning: LearningItem[]
+}
+
+const skills: SkillsData = {
   current: [
     { name: 'Python', level: 60, category: 'Coding' },
     { name: 'Cybersecurity', level: 65, category: 'Security' },
@@ -21,14 +38,12 @@ export default function MapPage() {
   return (
     <div className="container max-w-6xl mx-auto px-4 py-16 md:py-16">
       <div className="max-w-6xl w-full">
-        {/* Terminal Window */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
           className="border-2 border-gray-400/30 rounded-lg overflow-hidden shadow-2xl shadow-purple-400/20"
         >
-          {/* Terminal Header */}
           <div className="bg-gray-900 px-6 py-4 border-b-2 border-gray-400/30 flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-red-500" />
             <div className="w-3 h-3 rounded-full bg-yellow-500" />
@@ -36,7 +51,6 @@ export default function MapPage() {
             <span className="ml-4 text-base font-semibold text-gray-500 ">~/infos</span>
           </div>
 
-          {/* Terminal Content */}
           <div className="p-6 min-h-[600px]">
             <AnimatePresence mode="wait">
               <WorkMode key="work" skills={skills} />
@@ -45,11 +59,11 @@ export default function MapPage() {
         </motion.div>
       </div>
     </div>
-
   )
 }
 
-function WorkMode({ skills }: { skills: typeof skills }) {
+// 2. Use the interface here
+function WorkMode({ skills }: { skills: SkillsData }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -58,12 +72,10 @@ function WorkMode({ skills }: { skills: typeof skills }) {
       transition={{ duration: 0.3 }}
     >
       <div className="space-y-6">
-        {/* Command prompt */}
         <div className="flex text-xl items-center gap-2 mb-6">
           <span className="text-gray-400">$ cat infos.txt</span>
         </div>
 
-        {/* Current Skills */}
         <div className="space-y-4">
           <h2 className="text-lg md:text-xl font-bold mb-4 bg-gradient-to-r from-slate-300 to-slate-900 bg-clip-text text-transparent">
             ═══ HIGHLIGHT SKILLS ═══
@@ -97,7 +109,6 @@ function WorkMode({ skills }: { skills: typeof skills }) {
           </div>
         </div>
 
-        {/* Learning Path */}
         <div className="pt-8 space-y-4">
           <h2 className="text-lg md:text-xl font-bold mb-4 bg-gradient-to-r from-slate-300 to-slate-900 bg-clip-text text-transparent">
             ═══ LEARNING PATH ═══
