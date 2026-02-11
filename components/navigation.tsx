@@ -25,7 +25,7 @@ export function Navigation() {
         <div className="flex gap-12">
             <Link
               href="/blog"
-              className="flex items-center text-2xl font-semibold hover:text-foreground transition-colors"
+              className="flex items-center text-2xl text-gray-600 font-semibold hover:text-foreground transition-colors"
             >
               Blog
             </Link>
