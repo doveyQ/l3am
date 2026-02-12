@@ -91,7 +91,7 @@ function WorkMode({ skills }: { skills: SkillsData }) {
       transition={{ duration: 0.3 }}
     >
       <div className="space-y-6">
-        <div className="flex text-xl items-center gap-2 mb-6">
+        <div className="flex text-base md:text-xl items-center gap-2 mb-6">
           <span className="text-gray-400">$ cat infos.txt</span>
         </div>
 

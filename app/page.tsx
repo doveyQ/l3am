@@ -11,7 +11,7 @@ const socialLinks = [
 
 export default function Home() {
   return (
-    <div className="container max-w-6xl mx-auto px-4 py-16 md:py-12">
+    <div className="container max-w-6xl mx-auto px-4 py-4 md:py-12">
       <div className="max-w-6xl w-full">
         {/* Terminal Window */}
         <motion.div
@@ -92,7 +92,7 @@ export default function Home() {
                   >
                     <span className="text-sm md:text-lg text-gray-300">drwxr-xr-x</span>
                     <span className="text-gray-600">→</span>
-                    <span className="text-lg group-hover:underline">./blog</span>
+                    <span className="text-sm md:text-lg group-hover:underline">./blog</span>
                     <span className="text-gray-600 text-xs md:text-base">
                       (thoughts on code and security)
                     </span>
@@ -102,10 +102,10 @@ export default function Home() {
                     href="/infos"
                     className="group flex items-center text-lg gap-3 hover:text-purple-300 transition-colors"
                   >
-                    <span className="text-lg text-gray-300">drwxr-xr-x</span>
+                    <span className="text-sm md:text-lg text-gray-300">drwxr-xr-x</span>
                     <span className="text-gray-600">→</span>
-                    <span className="text-lg group-hover:underline">./infos</span>
-                    <span className="text-gray-600 text-base">
+                    <span className="text-sm md:text-lg group-hover:underline">./infos</span>
+                    <span className="text-gray-600 text-xs md:text-base">
                       (skills shown)
                     </span>
                   </Link>
@@ -133,7 +133,7 @@ export default function Home() {
         transition={{ duration: 0.5, delay: 0.2 }}
         className="mt-16"
       >
-        <div className="grid justify-items-center gap-2 md:grid-cols-3">
+        <div className="grid justify-items-center gap-2 grid-cols-3">
           {socialLinks.map((link, index) => (
             <motion.a
               key={link.name}

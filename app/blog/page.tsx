@@ -31,7 +31,7 @@ export default async function BlogPage() {
       <div className="space-y-8">
         {posts.length === 0 ? (
           <div className="py-12">
-            <p className="text-gray-600 text-2xl font-semibold dark:text-gray-400 mb-4">
+            <p className="text-gray-600 text-xl md:text-2xl font-semibold dark:text-gray-400 mb-4">
               {">"} Nothing to read yet ...
             </p>
           </div>

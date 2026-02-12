@@ -17,7 +17,7 @@ export function Navigation() {
       <div className="flex h-24 items-center justify-between px-12  ">
         <div className="flex flex-1 justify-start">
           <Link href="/" className="flex items-center space-x-2">
-            <span className="text-lg md:text-2xl font-bold bg-gradient-to-t from-blue-300 to-purple-600 bg-clip-text text-transparent">
+            <span className="text-xl md:text-3xl font-bold bg-gradient-to-b from-gray-300 to-gray-500 bg-clip-text text-transparent">
               l3am.dev
             </span>
           </Link>
