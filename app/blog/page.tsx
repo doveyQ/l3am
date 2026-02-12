@@ -12,7 +12,22 @@ export default async function BlogPage() {
 
   return (
     <div className="container max-w-4xl mx-auto px-4 py-16">
-
+      <Link href="/" className="ml-auto hover:text-purple-300 transition-colors group">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={2}
+          stroke="currentColor"
+          className="w-8 h-8"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"
+          />
+        </svg>
+      </Link>
       <div className="space-y-8">
         {posts.length === 0 ? (
           <div className="py-12">

@@ -11,7 +11,7 @@ const socialLinks = [
 
 export default function Home() {
   return (
-    <div className="container max-w-6xl mx-auto px-4 py-16 md:py-16">
+    <div className="container max-w-6xl mx-auto px-4 py-16 md:py-12">
       <div className="max-w-6xl w-full">
         {/* Terminal Window */}
         <motion.div
@@ -37,7 +37,7 @@ export default function Home() {
             >
               {/* Intro Animation */}
               <div className="space-y-4 mb-8">
-                <TypewriterText text="$ whoami" delay={0} />
+                <TypewriterText text="$ whoami" delay={0.2} />
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -57,17 +57,17 @@ export default function Home() {
                 transition={{ delay: 1.2 }}
                 className="space-y-4 mb-8"
               >
-                <TypewriterText text="$ cat about.txt" delay={1.2} />
+                <TypewriterText text="$ cat about.txt" delay={1.4} />
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 1.8 }}
+                  transition={{ delay: 1.6 }}
                   className="pl-4 text-gray-400 max-w-4xl"
                 >
-                  <p className="mb-4 text-lg font-medium">
+                  <p className="mb-4 text-base md:text-lg font-medium">
                     Software Engineering student from Austria. <br />
                     Knowning some cybersecurity, secure low-level coding, web development and scripting. <br />
-                    I love sports, health and traveling in my free time.
+                    Into sports, nutrition and adventures.
                   </p>
                 </motion.div>
               </motion.div>
@@ -76,24 +76,24 @@ export default function Home() {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 2.2 }}
+                transition={{ delay: 1.8 }}
                 className="space-y-3"
               >
-                <TypewriterText text="$ ls -la available_pages/" delay={2.2} />
+                <TypewriterText text="$ ls -la available_pages/" delay={2} />
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 2.8 }}
+                  transition={{ delay: 2.2 }}
                   className="pl-4 space-y-2"
                 >
                   <Link
                     href="/blog"
                     className="group flex items-center text-lg gap-3 hover:text-purple-300 transition-colors"
                   >
-                    <span className="text-lg text-gray-300">drwxr-xr-x</span>
+                    <span className="text-sm md:text-lg text-gray-300">drwxr-xr-x</span>
                     <span className="text-gray-600">→</span>
                     <span className="text-lg group-hover:underline">./blog</span>
-                    <span className="text-gray-600 text-base">
+                    <span className="text-gray-600 text-xs md:text-base">
                       (thoughts on code and security)
                     </span>
                   </Link>
@@ -116,10 +116,10 @@ export default function Home() {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 3.2 }}
+                transition={{ delay: 2.4 }}
                 className="mt-8 flex items-center gap-2"
               >
-                <span className="text-purple-400">$</span>
+                <span className="text-base md:text-xl text-purple-400">$</span>
                 <span className="animate-pulse">▊</span>
               </motion.div>
             </motion.div>
@@ -167,7 +167,7 @@ function TypewriterText({ text, delay }: { text: string; delay: number }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay, duration: 0.3 }}
-      className="text-gray-400 text-xl"
+      className="text-gray-400 text-base md:text-xl"
     >
       {text}
     </motion.div>

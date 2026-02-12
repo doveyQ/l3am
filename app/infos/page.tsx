@@ -1,6 +1,9 @@
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'
+import Link from 'next/link'
+
+
 
 // 1. Define types explicitly to avoid circular references
 type SkillItem = {
@@ -36,7 +39,7 @@ const skills: SkillsData = {
 
 export default function MapPage() {
   return (
-    <div className="container max-w-6xl mx-auto px-4 py-16 md:py-16">
+    <div className="container max-w-6xl mx-auto px-4 py-16 md:py-12">
       <div className="max-w-6xl w-full">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
@@ -49,6 +52,22 @@ export default function MapPage() {
             <div className="w-3 h-3 rounded-full bg-yellow-500" />
             <div className="w-3 h-3 rounded-full bg-green-500" />
             <span className="ml-4 text-base font-semibold text-gray-500 ">~/infos</span>
+            <Link href="/" className="ml-auto hover:text-purple-300 transition-colors group">
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                fill="none" 
+                viewBox="0 0 24 24" 
+                strokeWidth={2}
+                stroke="currentColor" 
+                className="w-8 h-8"
+              >
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"
+                />
+              </svg>
+            </Link>
           </div>
 
           <div className="p-6 min-h-[600px]">
@@ -62,7 +81,7 @@ export default function MapPage() {
   )
 }
 
-// 2. Use the interface here
+
 function WorkMode({ skills }: { skills: SkillsData }) {
   return (
     <motion.div
