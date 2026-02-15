@@ -11,7 +11,7 @@ const socialLinks = [
 
 export default function Home() {
   return (
-    <div className="container max-w-6xl mx-auto px-4 py-4 md:py-12">
+    <div className="container max-w-6xl mx-auto px-4 py-16 md:py-32">
       <div className="max-w-6xl w-full">
         {/* Terminal Window */}
         <motion.div
@@ -90,24 +90,18 @@ export default function Home() {
                     href="/blog"
                     className="group flex items-center text-lg gap-3 hover:text-purple-300 transition-colors"
                   >
-                    <span className="text-sm md:text-lg text-gray-300">drwxr-xr-x</span>
+                    <span className="text-sm md:text-lg text-gray-400">drwxr-xr-x</span>
                     <span className="text-gray-600">→</span>
                     <span className="text-sm md:text-lg group-hover:underline">./blog</span>
-                    <span className="text-gray-600 text-xs md:text-base">
-                      (thoughts on code and security)
-                    </span>
                   </Link>
                   
                   <Link
                     href="/infos"
                     className="group flex items-center text-lg gap-3 hover:text-purple-300 transition-colors"
                   >
-                    <span className="text-sm md:text-lg text-gray-300">drwxr-xr-x</span>
+                    <span className="text-sm md:text-lg text-gray-400">drwxr-xr-x</span>
                     <span className="text-gray-600">→</span>
-                    <span className="text-sm md:text-lg group-hover:underline">./infos</span>
-                    <span className="text-gray-600 text-xs md:text-base">
-                      (skills shown)
-                    </span>
+                    <span className="text-sm  md:text-lg group-hover:underline">./infos</span>
                   </Link>
                 </motion.div>
               </motion.div>

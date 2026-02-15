@@ -12,7 +12,7 @@ export default async function BlogPage() {
 
   return (
     <div className="container max-w-4xl mx-auto px-4 py-16">
-      <Link href="/" className="ml-auto hover:text-purple-300 transition-colors group">
+      <Link href="/" className="ml-auto hover:text-purple-300 transition-colors group animate-pulse">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

@@ -24,22 +24,22 @@ interface SkillsData {
 
 const skills: SkillsData = {
   current: [
-    { name: 'Python', level: 60, category: 'Coding' },
     { name: 'Cybersecurity', level: 65, category: 'Security' },
     { name: 'Linux', level: 65, category: 'Systems' },
     { name: 'Penetration Testing', level: 70, category: 'Security' },
-    { name: 'Docker', level: 50, category: 'DevOps' },
     { name: 'C', level: 60, category: 'Coding' },
+    { name: 'Python', level: 60, category: 'Coding' },
   ],  
   learning: [
     { name: 'TypeScript', progress: 20 },
-    { name: 'Rust', progress: 5 },
+    { name: 'Rust', progress: 15 },
+    { name: 'DevSecOps', progress: 5 },
   ]
 }
 
 export default function MapPage() {
   return (
-    <div className="container max-w-6xl mx-auto px-4 py-16 md:py-12">
+    <div className="container max-w-6xl mx-auto px-4 py-16 md:py-32">
       <div className="max-w-6xl w-full">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
@@ -52,7 +52,7 @@ export default function MapPage() {
             <div className="w-3 h-3 rounded-full bg-yellow-500" />
             <div className="w-3 h-3 rounded-full bg-green-500" />
             <span className="ml-4 text-base font-semibold text-gray-500 ">~/infos</span>
-            <Link href="/" className="ml-auto hover:text-purple-300 transition-colors group">
+            <Link href="/" className="ml-auto hover:text-purple-300 transition-colors group animate-pulse">
               <svg 
                 xmlns="http://www.w3.org/2000/svg" 
                 fill="none" 
