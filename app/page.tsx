@@ -25,7 +25,7 @@ export default function Home() {
             <div className="w-3 h-3 rounded-full bg-red-500" />
             <div className="w-3 h-3 rounded-full bg-yellow-500" />
             <div className="w-3 h-3 rounded-full bg-green-500" />
-            <span className="ml-4 text-base font-semibold text-gray-500 ">leon@portfolio:~$</span>
+            <span className="ml-4 text-base font-semibold text-gray-500 ">leon@about:~$</span>
           </div>
 
           {/* Terminal Content */}
@@ -44,7 +44,7 @@ export default function Home() {
                   transition={{ delay: 0.8 }}
                   className="pl-4 space-y-2"
                 >
-                  <p className="text-xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-900 bg-clip-text text-transparent">
+                  <p className="text-xl md:text-5xl py-1 font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-900 bg-clip-text text-transparent">
                     &gt; Leon / dovey
                   </p>
                 </motion.div>
@@ -65,9 +65,9 @@ export default function Home() {
                   className="pl-4 text-gray-400 max-w-4xl"
                 >
                   <p className="mb-4 text-base md:text-lg font-medium">
-                    Software Engineering student from Austria. <br />
-                    Knowning some cybersecurity, secure low-level coding, web development and scripting. <br />
-                    Into sports, nutrition and adventures.
+                    - Software Engineering student from Austria. <br />
+                    - Knowning some cybersecurity, project management and software engineering. <br />
+                    - Into sports and nutrition.
                   </p>
                 </motion.div>
               </motion.div>
