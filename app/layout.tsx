@@ -8,10 +8,10 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'l3am.dev',
-  description: 'dovey infos',
+  description: 'Software Engineer portfolio & blog',
   openGraph: {
-    title: '3am.dev',
-    description: 'dovey infos',
+    title: 'l3am.dev',
+    description: 'Software Engineer portfolio & blog',
     type: 'website',
   },
 }
@@ -31,7 +31,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <div className="min-h-screen flex flex-col">
-            
+
             <main className="flex-1">
               {children}
             </main>
