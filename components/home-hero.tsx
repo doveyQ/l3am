@@ -28,8 +28,8 @@ export function HomeHero() {
         </h1>
 
         <p className="max-w-2xl pb-4 mx-auto text-lg md:text-xl text-gray-400 font-medium leading-relaxed">
-          Software Engineering student from Austria. Focused on cybersecurity,
-          project management, and building high-performance software.
+          Software Engineering student based in Austria. Focused on building high-quality software,
+          AI-native engineering & security.
         </p>
       </motion.div>
     </div>
