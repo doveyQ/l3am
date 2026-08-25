@@ -1,0 +1,21 @@
+/**
+ * Basis-Konfiguration für den Worker. Der Astro-Adapter liest diese Datei und
+ * schreibt daraus beim Build die vollständige `dist/server/wrangler.json`
+ * (mit `main` und dem Asset-Verzeichnis) — deshalb steht hier nur, was der
+ * Adapter nicht selbst weiß.
+ *
+ * Deploy:  npm run build && npx wrangler deploy -c dist/server/wrangler.json
+ * Secret:  npx wrangler secret put RESEND_API_KEY
+ */
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "l3am",
+  "compatibility_date": "2026-04-15",
+  "observability": { "enabled": true },
+  "vars": {
+    // Kein Geheimnis, darf im Repo stehen. RESEND_API_KEY dagegen gehört
+    // ausschließlich in `wrangler secret put` bzw. ins Dashboard.
+    "KONTAKT_MAIL": "hallo@l3am.dev",
+    "RESEND_FROM": "leam Website <formular@l3am.dev>"
+  }
+}

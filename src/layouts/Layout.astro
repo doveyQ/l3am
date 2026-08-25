@@ -1,0 +1,124 @@
+---
+import '../styles/global.css';
+import AmbientField from '../components/AmbientField.astro';
+import Cursor from '../components/Cursor.astro';
+
+interface Props {
+  titel: string;
+  beschreibung: string;
+}
+
+const { titel, beschreibung } = Astro.props;
+const kanonisch = new URL(Astro.url.pathname, Astro.site ?? 'https://l3am.dev').href;
+---
+
+<!doctype html>
+<html lang="de" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{titel}</title>
+    <meta name="description" content={beschreibung} />
+    <link rel="canonical" href={kanonisch} />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Both faces render in the first viewport, so both are on the critical
+         path. latin-ext is left to unicode-range. -->
+    <link
+      rel="preload"
+      href="/fonts/geist-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/geist-mono-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="de_AT" />
+    <meta property="og:site_name" content="leam" />
+    <meta property="og:title" content={titel} />
+    <meta property="og:description" content={beschreibung} />
+    <meta property="og:url" content={kanonisch} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2309090b'/%3E%3Crect x='9' y='8' width='2.5' height='16' fill='%23fff'/%3E%3Crect x='9' y='21.5' width='14' height='2.5' fill='%23fff'/%3E%3C/svg%3E"
+    />
+
+    <script is:inline>
+      // Set before paint so the entrance transition never fires on a
+      // no-JS render, and content is never left hidden by a failed script.
+      document.documentElement.classList.add('js');
+    </script>
+
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        name: 'leam',
+        url: 'https://l3am.dev',
+        description: beschreibung,
+        foundingDate: '2026',
+        areaServed: 'AT',
+        knowsLanguage: 'de',
+      })}
+    />
+  </head>
+
+  <body class="bg-ground text-ink antialiased">
+    <!--
+      DIRECTION CONTRACT · leam · seed 42e3b049
+
+      THESIS: The spec sheet of an engineering studio, not an agency landing
+      page. Refuses the icon-card feature grid and the hero-metric template.
+
+      OWN-WORLD: Off-white paper (#FBFBFC) over one fixed animated layer — a
+      breathing dot field on canvas that traces hairline edges under the
+      pointer, page-wide. A square custom cursor rides it. Charcoal type, one
+      muted indigo (#3F4A8A) marking only what is clickable, active or in
+      motion. Geist Sans at -0.04em; Geist Mono only for real designators.
+      Depth comes from rule weight, never from shadow.
+
+      STORY: A Geschäftsführer understands in one line that this studio designs
+      and builds the whole front end, sees three faces, and books a call. Short
+      sentences throughout; the work carries the argument, not the prose.
+
+      FIRST VIEWPORT: The dot field fills the frame and resolves left to right
+      on load. The headline rises word by word from behind a mask, its second
+      sentence in indigo. Credential designator in the top rail, not above the
+      heading. CTA on the baseline rule.
+
+      FORM: Brief-pinned Swiss technical spec sheet — the standing exit, canon
+      at full fidelity against Stripe / Linear / Vercel. Roll 42e3b049 assigned
+      grounded #4; the pinned brief overrides it. Raise taken from the declined
+      webgl-shader-portal challenger: the hero field is a real canvas system,
+      not a static SVG imitation of one.
+
+      FINISH: unreviewed and undocumented is unfinished; this build ends with
+      the finish review, the verdict, DESIGN.md, and every shipping raster
+      carrying its provenance
+    -->
+    <AmbientField />
+    <div class="backdrop" aria-hidden="true"><div class="backdrop__wash"></div></div>
+    <Cursor />
+
+    <a
+      href="#inhalt"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-ink focus:px-4 focus:py-3 focus:text-sm focus:text-ground"
+    >
+      Zum Inhalt springen
+    </a>
+    <div class="layer">
+      <slot />
+    </div>
+  </body>
+</html>

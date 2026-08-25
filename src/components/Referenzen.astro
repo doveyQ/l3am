@@ -1,0 +1,64 @@
+---
+import ArrowUpRight from '@lucide/astro/icons/arrow-up-right';
+import { referenzen } from '../data/referenzen';
+---
+
+{
+  referenzen.length > 0 && (
+    <section id="referenzen" class="border-b border-rule">
+      <div class="shell">
+        <div class="grid gap-x-16 gap-y-6 border-b border-rule py-16 md:py-24 lg:grid-cols-12">
+          <h2 class="section-head rise lg:col-span-7">Gebaut, ausgeliefert, im Betrieb.</h2>
+          <p class="rise max-w-[46ch] self-end text-ink-3 lg:col-span-5" style="--rise-delay:120ms">
+            Ausgewählte Projekte mit dem, was tatsächlich messbar war.
+          </p>
+        </div>
+
+        <div class="hidden items-baseline gap-8 border-b border-rule py-3 lg:grid lg:grid-cols-12">
+          <span class="tech-label lg:col-span-3">Kunde</span>
+          <span class="tech-label lg:col-span-4">Aufgabe</span>
+          <span class="tech-label lg:col-span-3">Ergebnis</span>
+          <span class="tech-label lg:col-span-2 lg:text-right">Jahr</span>
+        </div>
+
+        {referenzen.map((r) => {
+          const Tag = r.href ? 'a' : 'div';
+          return (
+            <Tag
+              href={r.href}
+              class="rise group grid items-baseline gap-x-8 gap-y-3 border-b border-rule py-8 no-underline transition-colors duration-400 hover:bg-tint lg:grid-cols-12"
+            >
+              <h3 class="flex items-center gap-2 text-[1.0625rem] font-medium tracking-[-0.02em] text-ink lg:col-span-3">
+                {r.kunde}
+                {r.href && (
+                  <ArrowUpRight
+                    size={16}
+                    stroke-width={1.5}
+                    class="text-ink-4 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-ink"
+                    aria-hidden="true"
+                  />
+                )}
+              </h3>
+              <p class="max-w-[42ch] text-[0.9375rem] leading-[1.55] text-ink-3 lg:col-span-4">
+                {r.aufgabe}
+              </p>
+              <p class="max-w-[34ch] text-[0.9375rem] leading-[1.55] text-ink-2 lg:col-span-3">
+                {r.ergebnis}
+              </p>
+              <div class="flex items-baseline justify-between gap-4 lg:col-span-2 lg:justify-end">
+                <ul class="flex flex-wrap gap-1.5 lg:hidden">
+                  {r.stack.map((s) => (
+                    <li class="border border-rule px-2 py-0.5 font-mono text-[0.625rem] text-ink-4">
+                      {s}
+                    </li>
+                  ))}
+                </ul>
+                <span class="font-mono text-[0.8125rem] tabular-nums text-ink-4">{r.jahr}</span>
+              </div>
+            </Tag>
+          );
+        })}
+      </div>
+    </section>
+  )
+}

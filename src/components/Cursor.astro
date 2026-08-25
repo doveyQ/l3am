@@ -1,0 +1,81 @@
+---
+/**
+ * Eigener Zeiger: eine Passermarke, wie sie im Druck den Registerstand
+ * anzeigt — vier Striche mit einer echten Lücke in der Mitte, kein Kreis
+ * und kein gefüllter Block. Über Anklickbarem dreht sie sich um 45° und
+ * öffnet sich; über Textfeldern wird sie zur Setzmarke.
+ *
+ * Nur für echte Zeigegeräte. Touch und `prefers-reduced-motion` bekommen
+ * den Systemzeiger zurück.
+ */
+---
+
+<div class="cursor" data-cursor aria-hidden="true">
+  <div class="cursor__mark" data-cursor-mark>
+    <span class="cursor__tick cursor__tick--n"></span>
+    <span class="cursor__tick cursor__tick--e"></span>
+    <span class="cursor__tick cursor__tick--s"></span>
+    <span class="cursor__tick cursor__tick--w"></span>
+  </div>
+  <div class="cursor__dot" data-cursor-dot></div>
+</div>
+
+<script>
+  const wurzel = document.documentElement;
+  const mark = document.querySelector<HTMLElement>('[data-cursor-mark]');
+  const dot = document.querySelector<HTMLElement>('[data-cursor-dot]');
+
+  const fein = window.matchMedia('(hover: hover) and (pointer: fine)');
+  const reduziert = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  if (mark && dot && fein.matches && !reduziert.matches) {
+    let zx = window.innerWidth / 2;
+    let zy = window.innerHeight / 2;
+    let mx = zx;
+    let my = zy;
+    let sichtbar = false;
+
+    const ANKLICKBAR = 'a, button, [role="button"], label, summary';
+    const TEXTFELD = 'input:not([type="radio"]):not([type="checkbox"]), textarea';
+
+    function schleife() {
+      // Die Marke zieht weich nach, der Punkt sitzt exakt.
+      mx += (zx - mx) * 0.18;
+      my += (zy - my) * 0.18;
+      mark!.style.setProperty('--mx', `${mx}px`);
+      mark!.style.setProperty('--my', `${my}px`);
+      dot!.style.setProperty('--dx', `${zx}px`);
+      dot!.style.setProperty('--dy', `${zy}px`);
+      requestAnimationFrame(schleife);
+    }
+    requestAnimationFrame(schleife);
+
+    function aus() {
+      sichtbar = false;
+      wurzel.classList.remove('cursor-on', 'cursor-active', 'cursor-text');
+    }
+
+    window.addEventListener(
+      'pointermove',
+      (e) => {
+        if (e.pointerType === 'touch') return;
+        zx = e.clientX;
+        zy = e.clientY;
+        if (!sichtbar) {
+          sichtbar = true;
+          mx = zx;
+          my = zy;
+          wurzel.classList.add('cursor-on');
+        }
+        const ziel = e.target as Element | null;
+        wurzel.classList.toggle('cursor-active', !!ziel?.closest(ANKLICKBAR));
+        wurzel.classList.toggle('cursor-text', !!ziel?.closest(TEXTFELD));
+      },
+      { passive: true },
+    );
+
+    document.addEventListener('pointerleave', aus);
+    window.addEventListener('blur', aus);
+    window.addEventListener('touchstart', aus, { passive: true });
+  }
+</script>

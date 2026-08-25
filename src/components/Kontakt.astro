@@ -1,0 +1,344 @@
+---
+import Terminal from '@lucide/astro/icons/terminal';
+
+/**
+ * Kontakt.
+ *
+ * Das Formular schickt JSON an /api/kontakt — die Route läuft als
+ * Cloudflare-Function und stellt die Mail über Resend zu. Die Prüfung hier im
+ * Browser ist reiner Komfort; verbindlich prüft der Server noch einmal.
+ */
+const FORM_ENDPOINT = '/api/kontakt';
+const KONTAKT_MAIL = 'hallo@l3am.dev';
+
+const umfaenge = [
+  { wert: 'web', label: 'Web', detail: 'Website oder Anwendung' },
+  { wert: 'ki', label: 'KI', detail: 'Automatisierung im Bestand' },
+  { wert: 'beides', label: 'Beides', detail: 'System und Automatisierung' },
+];
+---
+
+<section id="kontakt" class="border-b border-rule">
+  <div class="shell">
+    <div class="grid gap-x-16 gap-y-6 border-b border-rule py-16 md:py-24 lg:grid-cols-12">
+      <h2 class="section-head reveal rise lg:col-span-7">
+        <span><span>Erzähl uns,</span></span>
+        <span><span class="text-ink-3" style="--line:1">was gerade nicht läuft.</span></span>
+      </h2>
+      <p class="rise max-w-[42ch] self-end text-ink-3 lg:col-span-5" style="--rise-delay:180ms">
+        Kein Sales-Call. Wir gehen dein Vorhaben durch und sagen ehrlich, ob wir
+        die Richtigen dafür sind.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12">
+      <!-- Konsole: helles Terminal, gleiche Hairline-Sprache wie die ganze Seite. -->
+      <div class="rise border-rule py-12 lg:col-span-8 lg:border-r lg:py-16 lg:pr-16">
+        <div class="border border-rule">
+          <div class="flex items-center gap-3 border-b border-rule bg-tint px-4 py-2.5">
+            <Terminal size={14} stroke-width={1.5} class="text-accent" aria-hidden="true" />
+            <span class="font-mono text-[0.6875rem] tracking-[0.06em] text-ink-3">
+              leam ~ /projektanfrage
+            </span>
+            <span
+              class="ml-auto flex items-center gap-1.5 font-mono text-[0.625rem] tracking-[0.08em] text-ink-4"
+            >
+              <span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+              BEREIT
+            </span>
+          </div>
+
+          <form class="p-5 md:p-8" data-kontakt novalidate>
+            <div class="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+              <div class="flex flex-col">
+                <label for="k-name" class="tech-label mb-2.5">
+                  <span class="text-ink-4" aria-hidden="true">&gt;</span> Name
+                </label>
+                <input
+                  id="k-name"
+                  name="name"
+                  type="text"
+                  required
+                  autocomplete="name"
+                  placeholder="Vor- und Nachname"
+                  aria-describedby="k-name-fehler"
+                  class="border-b border-rule bg-transparent pb-2.5 font-mono text-[0.9375rem] text-ink transition-colors duration-300 outline-none placeholder:text-ink-4 hover:border-rule-strong focus:border-accent aria-[invalid=true]:border-ink"
+                />
+                <p id="k-name-fehler" class="mt-2 font-mono text-[0.6875rem] text-ink-2 empty:mt-0" role="alert"></p>
+              </div>
+
+              <div class="flex flex-col">
+                <label for="k-mail" class="tech-label mb-2.5">
+                  <span class="text-ink-4" aria-hidden="true">&gt;</span> E-Mail
+                </label>
+                <input
+                  id="k-mail"
+                  name="email"
+                  type="email"
+                  required
+                  autocomplete="email"
+                  placeholder="name@firma.at"
+                  aria-describedby="k-mail-fehler"
+                  class="border-b border-rule bg-transparent pb-2.5 font-mono text-[0.9375rem] text-ink transition-colors duration-300 outline-none placeholder:text-ink-4 hover:border-rule-strong focus:border-accent aria-[invalid=true]:border-ink"
+                />
+                <p id="k-mail-fehler" class="mt-2 font-mono text-[0.6875rem] text-ink-2 empty:mt-0" role="alert"></p>
+              </div>
+            </div>
+
+            <fieldset class="mt-10" aria-describedby="k-umfang-fehler">
+              <legend class="tech-label mb-3.5">
+                <span class="text-ink-4" aria-hidden="true">&gt;</span> Projektumfang
+              </legend>
+              <div class="grid gap-px sm:grid-cols-3" data-umfang>
+                {
+                  umfaenge.map((u) => (
+                    <label
+                      class="group relative cursor-pointer border border-rule px-4 py-3.5 transition-colors duration-300 hover:border-rule-strong hover:bg-accent-wash has-checked:border-accent has-checked:bg-accent has-checked:text-ground has-focus-visible:outline has-focus-visible:outline-2 has-focus-visible:outline-offset-3 has-focus-visible:outline-accent"
+                    >
+                      <input
+                        type="radio"
+                        name="umfang"
+                        value={u.wert}
+                        class="sr-only"
+                        required
+                      />
+                      <span class="block font-mono text-[0.8125rem] tracking-[0.04em]">
+                        {u.label}
+                      </span>
+                      <span class="mt-1 block text-[0.75rem] leading-[1.4] text-ink-4 transition-colors duration-300 group-has-checked:text-ground/65">
+                        {u.detail}
+                      </span>
+                    </label>
+                  ))
+                }
+              </div>
+              <p id="k-umfang-fehler" class="mt-2 font-mono text-[0.6875rem] text-ink-2 empty:mt-0" role="alert"></p>
+            </fieldset>
+
+            <div class="mt-10 flex flex-col">
+              <label for="k-text" class="tech-label mb-2.5">
+                <span class="text-ink-4" aria-hidden="true">&gt;</span> Worum geht es
+              </label>
+              <textarea
+                id="k-text"
+                name="nachricht"
+                rows="5"
+                required
+                placeholder="Was soll entstehen — und was habt ihr schon?"
+                aria-describedby="k-text-fehler"
+                class="resize-y border-b border-rule bg-transparent pb-2.5 font-mono text-[0.9375rem] leading-[1.65] text-ink transition-colors duration-300 outline-none placeholder:text-ink-4 hover:border-rule-strong focus:border-accent aria-[invalid=true]:border-ink"
+              ></textarea>
+              <p id="k-text-fehler" class="mt-2 font-mono text-[0.6875rem] text-ink-2 empty:mt-0" role="alert"></p>
+            </div>
+
+            <!-- Honeypot: für Menschen unsichtbar, für Bots verlockend. -->
+            <div class="absolute h-0 w-0 overflow-hidden" aria-hidden="true">
+              <label for="k-firma">Firma nicht ausfüllen</label>
+              <input id="k-firma" name="firma" type="text" tabindex="-1" autocomplete="off" />
+            </div>
+
+            <div class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4 border-t border-rule pt-8">
+              <button
+                type="submit"
+                data-submit
+                class="group inline-flex items-center gap-4 border border-accent bg-accent px-6 py-4 font-mono text-[0.875rem] tracking-[0.04em] text-ground transition-colors duration-300 hover:bg-ground hover:text-accent disabled:cursor-not-allowed disabled:border-ink-4 disabled:bg-ink-4 disabled:text-ground"
+              >
+                <span data-submit-label>ANFRAGE SENDEN</span>
+                <span
+                  class="inline-block h-px w-5 bg-current transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:w-9 group-disabled:w-5"
+                  aria-hidden="true"></span>
+              </button>
+
+              <p
+                class="font-mono text-[0.75rem] leading-[1.5] text-ink-3"
+                data-status
+                role="status"
+                aria-live="polite"
+              >
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Was danach passiert. Ein Ablauf, keine Versprechen. -->
+      <aside class="rise border-t border-rule py-12 lg:col-span-4 lg:border-t-0 lg:py-16 lg:pl-16" style="--rise-delay:140ms">
+        <span class="tech-label">Ablauf</span>
+        <ol class="mt-8 border-t border-rule">
+          {
+            [
+              { t: 'Antwort', d: 'Kommt von uns persönlich, nicht vom Autoresponder.' },
+              { t: 'Erstgespräch', d: '45 Minuten, technisch, unverbindlich.' },
+              { t: 'Einschätzung', d: 'Aufwand und Risiken bekommt ihr schriftlich.' },
+              { t: 'Entscheidung', d: 'Ihr entscheidet — auch gegen uns.' },
+            ].map((s, i) => (
+              <li class="flex gap-5 border-b border-rule py-5">
+                <span class="font-mono text-[0.6875rem] tabular-nums text-accent pt-1">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <div>
+                  <h3 class="text-[0.9375rem] font-medium tracking-[-0.01em]">{s.t}</h3>
+                  <p class="mt-1.5 max-w-[32ch] text-[0.875rem] leading-[1.5] text-ink-4">{s.d}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+
+        <p class="mt-8 text-[0.875rem] leading-[1.6] text-ink-4">
+          Lieber direkt schreiben? <a
+            href={`mailto:${KONTAKT_MAIL}`}
+            class="text-accent underline decoration-accent/35 underline-offset-4 transition-colors duration-300 hover:decoration-accent"
+            >{KONTAKT_MAIL}</a
+          >
+        </p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ FORM_ENDPOINT, KONTAKT_MAIL }}>
+  const form = document.querySelector('[data-kontakt]');
+
+  if (form) {
+    const status = form.querySelector('[data-status]');
+    const button = form.querySelector('[data-submit]');
+    const label = form.querySelector('[data-submit-label]');
+
+    const regeln = {
+      name: (v) =>
+        v.trim().length >= 2 ? '' : 'Bitte gib deinen Namen ein (mindestens 2 Zeichen).',
+      email: (v) =>
+        /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim())
+          ? ''
+          : 'Diese E-Mail-Adresse ist unvollständig — bitte prüfe sie noch einmal.',
+      umfang: (v) => (v ? '' : 'Bitte wähle aus, worum es geht: Web, KI oder beides.'),
+      nachricht: (v) =>
+        v.trim().length >= 20
+          ? ''
+          : 'Beschreib es bitte in ein bis zwei Sätzen — ab etwa 20 Zeichen können wir etwas damit anfangen.',
+    };
+
+    const fehlerFeld = {
+      name: 'k-name-fehler',
+      email: 'k-mail-fehler',
+      umfang: 'k-umfang-fehler',
+      nachricht: 'k-text-fehler',
+    };
+
+    const eingabe = (feld) =>
+      feld === 'umfang'
+        ? form.querySelector('input[name="umfang"]')
+        : form.querySelector(`[name="${feld}"]`);
+
+    function wert(feld) {
+      if (feld === 'umfang') {
+        const gewaehlt = form.querySelector('input[name="umfang"]:checked');
+        return gewaehlt ? gewaehlt.value : '';
+      }
+      return form.querySelector(`[name="${feld}"]`)?.value ?? '';
+    }
+
+    function zeigeFehler(feld, text) {
+      const ziel = document.getElementById(fehlerFeld[feld]);
+      if (ziel) ziel.textContent = text;
+      const el = eingabe(feld);
+      if (el && feld !== 'umfang') {
+        if (text) el.setAttribute('aria-invalid', 'true');
+        else el.removeAttribute('aria-invalid');
+      }
+    }
+
+    function pruefe(feld) {
+      const text = regeln[feld](wert(feld));
+      zeigeFehler(feld, text);
+      return !text;
+    }
+
+    // Erst nach dem ersten Absendeversuch live validieren — sonst schimpft
+    // das Formular, während noch getippt wird.
+    let abgeschickt = false;
+    for (const feld of Object.keys(regeln)) {
+      const el = eingabe(feld);
+      if (!el) continue;
+      const ereignis = feld === 'umfang' ? 'change' : 'blur';
+      const knoten =
+        feld === 'umfang' ? form.querySelectorAll('input[name="umfang"]') : [el];
+      for (const k of knoten) {
+        k.addEventListener(ereignis, () => {
+          if (abgeschickt) pruefe(feld);
+        });
+        if (feld !== 'umfang') {
+          k.addEventListener('input', () => {
+            if (abgeschickt && k.getAttribute('aria-invalid') === 'true') pruefe(feld);
+          });
+        }
+      }
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      abgeschickt = true;
+
+      if (form.querySelector('[name="firma"]')?.value) return;
+
+      const felder = Object.keys(regeln);
+      const ergebnisse = felder.map(pruefe);
+
+      if (ergebnisse.includes(false)) {
+        const ersterFehler = felder[ergebnisse.indexOf(false)];
+        status.textContent = 'Noch nicht abgeschickt — bitte die markierten Felder prüfen.';
+        eingabe(ersterFehler)?.focus();
+        return;
+      }
+
+      button.disabled = true;
+      label.textContent = 'WIRD GESENDET';
+      status.textContent = '';
+
+      const daten = {
+        name: wert('name'),
+        email: wert('email'),
+        umfang: wert('umfang'),
+        nachricht: wert('nachricht'),
+      };
+
+      try {
+        const antwort = await fetch(FORM_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ ...daten, firma: wert('firma') }),
+        });
+
+        if (!antwort.ok) {
+          const inhalt = await antwort.json().catch(() => ({}));
+
+          // Der Server prüft strenger als der Browser — seine Feldmeldungen
+          // gewinnen, damit niemand vor einem stummen Formular sitzt.
+          if (antwort.status === 400 && inhalt.fehler) {
+            for (const [feld, text] of Object.entries(inhalt.fehler)) zeigeFehler(feld, text);
+            eingabe(Object.keys(inhalt.fehler)[0])?.focus();
+            button.disabled = false;
+            label.textContent = 'ANFRAGE SENDEN';
+            status.textContent = inhalt.meldung ?? 'Bitte die markierten Felder prüfen.';
+            return;
+          }
+          throw new Error(String(antwort.status));
+        }
+
+        label.textContent = 'GESENDET';
+        status.textContent = `Angekommen. Wir melden uns an ${daten.email} zurück.`;
+        form.reset();
+        for (const feld of felder) zeigeFehler(feld, '');
+        window.setTimeout(() => {
+          button.disabled = false;
+          label.textContent = 'ANFRAGE SENDEN';
+        }, 2500);
+      } catch {
+        button.disabled = false;
+        label.textContent = 'ERNEUT SENDEN';
+        status.textContent = `Das Senden hat nicht geklappt. Schreib uns bitte direkt an ${KONTAKT_MAIL}.`;
+      }
+    });
+  }
+</script>

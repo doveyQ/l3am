@@ -1,0 +1,70 @@
+---
+import { stack } from '../data/stack';
+---
+
+<section id="stack" class="border-b border-rule">
+  <div class="shell">
+    <div class="grid gap-x-16 gap-y-6 border-b border-rule py-16 md:py-24 lg:grid-cols-12">
+      <h2 class="section-head reveal rise lg:col-span-7">
+        <span><span>Der Stack.</span></span>
+        <span><span class="text-ink-3" style="--line:1">Und warum.</span></span>
+      </h2>
+      <p class="rise max-w-[38ch] self-end text-ink-3 lg:col-span-5" style="--rise-delay:180ms">
+        Jedes Werkzeug hier lässt sich in einem Satz begründen. Sonst steht es
+        nicht im Projekt.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" data-stack-grid>
+      {
+        stack.map((e, i) => (
+          <article
+            class="stack-card rise group relative overflow-hidden border-b border-rule p-8 transition-colors duration-500 sm:not-nth-[2n]:border-r lg:not-nth-[3n]:border-r lg:nth-[2n]:border-r md:p-10"
+            style={`--rise-delay:${(i % 3) * 90}ms`}
+          >
+            <span
+              class="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+              style="background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), rgba(63,74,138,0.08), transparent 65%)"
+              aria-hidden="true"
+            />
+            <span
+              class="pointer-events-none absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-accent transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-x-100"
+              aria-hidden="true"
+            />
+
+            <div class="relative flex items-baseline justify-between gap-4">
+              <h3 class="text-[1.0625rem] font-medium tracking-[-0.02em]">{e.name}</h3>
+              <span class="tech-label transition-colors duration-300 group-hover:text-accent">{e.schicht}</span>
+            </div>
+
+            <p class="relative mt-4 max-w-[40ch] text-[0.9375rem] leading-[1.6] text-ink-3">
+              {e.grund}
+            </p>
+
+            <p class="relative mt-8 font-mono text-[0.6875rem] tracking-[0.04em] text-ink-4">
+              {e.meta}
+            </p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  // Border illumination follows the pointer inside each card.
+  const cards = document.querySelectorAll<HTMLElement>('.stack-card');
+  if (cards.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    for (const card of cards) {
+      card.addEventListener(
+        'pointermove',
+        (e) => {
+          const r = card.getBoundingClientRect();
+          card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+          card.style.setProperty('--my', `${e.clientY - r.top}px`);
+        },
+        { passive: true },
+      );
+    }
+  }
+</script>

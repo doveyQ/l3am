@@ -1,0 +1,550 @@
+@import 'tailwindcss';
+
+/* Self-hosted Geist, latin + latin-ext only — everything German needs and
+   nothing it doesn't. unicode-range keeps latin-ext off the critical path. */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/geist-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/geist-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/geist-mono-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/geist-mono-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@theme {
+  --font-sans: 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, 'SFMono-Regular', 'JetBrains Mono', monospace;
+
+  /* Ground */
+  --color-ground: #fbfbfc;
+  --color-paper: #ffffff;
+  --color-tint: #f6f6f8;
+  --color-tint-2: #f1f1f4;
+
+  /* Rules — hairlines carry the whole structure of this design */
+  --color-rule: #e4e4e7;
+  --color-rule-strong: #d4d4d8;
+
+  /* Akzent — Ultramarin. Die eine Farbe der Seite: sie markiert alles,
+     was anklickbar, aktiv oder gerade in Bewegung ist. */
+  --color-accent: #3f4a8a;
+  --color-accent-deep: #2e3768;
+  --color-accent-wash: #f3f4f9;
+
+  /* Ink */
+  --color-ink: #09090b;
+  --color-ink-2: #3f3f46;
+  --color-ink-3: #52525b;
+  --color-ink-4: #71717a;
+
+  /* Fluid display scale. Display ceiling 6rem per the type floor. */
+  --text-display: clamp(2.375rem, 1.1rem + 3.6vw, 4rem);
+  --text-section: clamp(1.875rem, 1.1rem + 2.6vw, 3.25rem);
+  --text-lead: clamp(1.0625rem, 0.98rem + 0.35vw, 1.25rem);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    /* The sticky rail must not cover an anchor target. */
+    scroll-padding-top: 5.5rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    background-color: var(--color-ground);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: 'ss01' on, 'cv01' on;
+  }
+
+  /* --- Browser surfaces. These ship with defaults that belong to no design
+     system; every one of them is themed from the palette above. --- */
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-ground);
+  }
+
+  :where(input, textarea, select) {
+    caret-color: var(--color-accent);
+  }
+
+  :where(a, button, input, textarea, select, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  a {
+    text-underline-offset: 0.22em;
+    text-decoration-thickness: 1px;
+  }
+
+  /* Numerals in every measured value line up column-to-column. */
+  :where(.font-mono, [class*='font-mono']) {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'ss01' off, 'zero' on;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-rule-strong) transparent;
+  }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--color-rule-strong);
+    border: 3px solid var(--color-ground);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover { background-color: var(--color-accent); }
+}
+
+@layer components {
+  /* The technical label. Mono here is carrying real designators, versions,
+     counts and coordinates — never decoration. */
+  .tech-label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-ink-4);
+  }
+
+  .display {
+    font-size: var(--text-display);
+    line-height: 0.94;
+    letter-spacing: -0.04em;
+    font-weight: 500;
+    text-wrap: balance;
+  }
+
+  .section-head {
+    font-size: var(--text-section);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    font-weight: 500;
+    text-wrap: balance;
+  }
+
+  /* The page's one measured container. Every section rules off the same
+     gutters, so the hairlines stack into a single continuous grid. */
+  .shell {
+    width: 100%;
+    margin-inline: auto;
+    max-width: 90rem;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 768px) { .shell { padding-inline: 2.5rem; } }
+  @media (min-width: 1280px) { .shell { padding-inline: 4rem; } }
+
+
+  /* ── Der Untergrund ──────────────────────────────────────────────────────
+     Eine einzige Ebene: das Knotenfeld liegt fest hinter der ganzen Seite,
+     atmet langsam und zieht unter dem Zeiger seinen Graphen. Kein Raster,
+     kein Korn — nur das Feld und ein sehr ruhiger Lichtverlauf darüber. */
+
+  .backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .backdrop__wash {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(120% 60% at 82% -12%, color-mix(in srgb, var(--color-accent) 5%, transparent), transparent 60%),
+      radial-gradient(90% 50% at 8% 108%, color-mix(in srgb, var(--color-accent) 4%, transparent), transparent 62%);
+  }
+
+  /* Alles über dem Untergrund. */
+  .layer { position: relative; z-index: 1; }
+
+  /* ── Eigener Zeiger ──────────────────────────────────────────────────────
+     Eine Passermarke: vier Striche mit echter Lücke in der Mitte. Nur für
+     echte Zeigegeräte, nie für Touch. */
+
+  @media (hover: hover) and (pointer: fine) {
+    html.cursor-on,
+    html.cursor-on * {
+      cursor: none !important;
+    }
+  }
+
+  .cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 90;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s linear;
+  }
+  html.cursor-on .cursor { opacity: 1; }
+
+  .cursor__mark {
+    position: absolute;
+    width: 34px;
+    height: 34px;
+    margin: -17px 0 0 -17px;
+    transform: translate3d(var(--mx, 0), var(--my, 0), 0) rotate(var(--rot, 0deg));
+    transition: transform 0.45s var(--ease-out-expo);
+  }
+  .cursor__tick {
+    position: absolute;
+    background-color: var(--color-accent);
+    transition:
+      inset 0.45s var(--ease-out-expo),
+      width 0.45s var(--ease-out-expo),
+      height 0.45s var(--ease-out-expo),
+      opacity 0.3s linear;
+  }
+  /* Strichlänge 10px, Lücke in der Mitte 14px. */
+  .cursor__tick--n { top: 0; left: 50%; width: 1px; height: 10px; margin-left: -0.5px; }
+  .cursor__tick--s { bottom: 0; left: 50%; width: 1px; height: 10px; margin-left: -0.5px; }
+  .cursor__tick--w { left: 0; top: 50%; height: 1px; width: 10px; margin-top: -0.5px; }
+  .cursor__tick--e { right: 0; top: 50%; height: 1px; width: 10px; margin-top: -0.5px; }
+
+  .cursor__dot {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    margin: -1.5px 0 0 -1.5px;
+    background-color: var(--color-ink);
+    transform: translate3d(var(--dx, 0), var(--dy, 0), 0);
+    transition: opacity 0.3s linear;
+  }
+
+  /* Über Anklickbarem: die Marke dreht sich in die Diagonale und öffnet sich. */
+  html.cursor-active .cursor__mark {
+    --rot: 45deg;
+    width: 54px;
+    height: 54px;
+    margin: -27px 0 0 -27px;
+  }
+  html.cursor-active .cursor__tick { height: 14px; }
+  html.cursor-active .cursor__tick--w,
+  html.cursor-active .cursor__tick--e { height: 1px; width: 14px; }
+  html.cursor-active .cursor__dot { opacity: 0; }
+
+  /* Über Textfeldern: nur die Senkrechte bleibt, als Setzmarke. */
+  html.cursor-text .cursor__mark { --rot: 0deg; width: 34px; height: 26px; margin: -13px 0 0 -17px; }
+  html.cursor-text .cursor__tick--w,
+  html.cursor-text .cursor__tick--e { opacity: 0; }
+  html.cursor-text .cursor__tick--n,
+  html.cursor-text .cursor__tick--s { height: 13px; }
+  html.cursor-text .cursor__dot { opacity: 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cursor { display: none; }
+    html.cursor-on, html.cursor-on * { cursor: auto !important; }
+  }
+
+  /* ── Das Signet im Hero ──────────────────────────────────────────────────
+     Drei Module, ein gemeinsamer Takt von 9 s. Modul n startet 3 s nach
+     Modul n−1, so wandert die Bewegung sichtbar von links nach rechts. */
+
+  .signet__svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 96px;
+  }
+
+  .signet__takt {
+    position: absolute;
+    top: -1px;
+    left: 0;
+    height: 1px;
+    width: 100%;
+    background-color: var(--color-accent);
+    transform-origin: left;
+    transform: scaleX(0);
+  }
+
+  .signet__block,
+  .signet__zeile,
+  .signet__knoten {
+    fill: currentColor;
+  }
+  .signet__block--akzent { fill: var(--color-accent); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .signet__takt {
+      animation: takt 9s linear infinite;
+      animation-delay: calc(var(--mod) * 3s);
+    }
+    @keyframes takt {
+      0%   { transform: scaleX(0); transform-origin: left; }
+      12%  { transform: scaleX(1); transform-origin: left; }
+      33%  { transform: scaleX(1); transform-origin: right; }
+      45%  { transform: scaleX(0); transform-origin: right; }
+      100% { transform: scaleX(0); transform-origin: right; }
+    }
+
+    /* Modul 1 — die Oberfläche baut sich Block für Block auf. */
+    .signet__block {
+      transform-origin: left center;
+      animation: block-auf 9s var(--ease-out-expo) infinite;
+      animation-delay: calc(var(--d) * 260ms);
+    }
+    @keyframes block-auf {
+      0%, 4%   { transform: scaleX(0); opacity: 0; }
+      14%      { transform: scaleX(1); opacity: 0.55; }
+      42%      { transform: scaleX(1); opacity: 0.55; }
+      52%, 100%{ transform: scaleX(1); opacity: 0.14; }
+    }
+
+    /* Modul 2 — die Zeilen werden getippt. */
+    .signet__zeile {
+      transform-origin: left center;
+      animation: zeile-auf 9s steps(1, end) infinite;
+      animation-delay: calc(3s + var(--d) * 200ms);
+      opacity: 0.5;
+    }
+    @keyframes zeile-auf {
+      0%, 3%    { transform: scaleX(0); }
+      6%, 46%   { transform: scaleX(1); }
+      52%, 100% { transform: scaleX(0); }
+    }
+    .signet__caret {
+      fill: var(--color-accent);
+      animation: caret 1s steps(1, end) infinite;
+    }
+    @keyframes caret { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+
+    /* Modul 3 — das Signal läuft durch die Kette. */
+    .signet__knoten {
+      opacity: 0.4;
+      animation: knoten 9s ease-out infinite;
+      animation-delay: calc(6s + var(--d) * 520ms);
+    }
+    @keyframes knoten {
+      0%, 2%  { opacity: 0.35; }
+      6%      { opacity: 1; fill: var(--color-accent); }
+      22%     { opacity: 0.35; }
+      100%    { opacity: 0.35; }
+    }
+    .signet__token {
+      fill: var(--color-accent);
+      offset-path: path('M24 58 H74 L118 30 L166 58');
+      offset-distance: 0%;
+      offset-rotate: 0deg;
+      animation: token 9s var(--ease-out-quart) infinite;
+      animation-delay: 6s;
+    }
+    @keyframes token {
+      0%, 2%   { offset-distance: 0%; opacity: 0; }
+      6%       { opacity: 1; }
+      26%      { offset-distance: 100%; opacity: 1; }
+      32%, 100%{ offset-distance: 100%; opacity: 0; }
+    }
+  }
+
+  /* Ohne Bewegung: der fertige Zustand, vollständig lesbar. */
+  @media (prefers-reduced-motion: reduce) {
+    .signet__takt { transform: scaleX(1); }
+    .signet__block, .signet__zeile { opacity: 0.5; }
+    .signet__knoten { opacity: 0.5; }
+    .signet__token, .signet__caret { opacity: 0; }
+  }
+
+  /* ── Aufklapper ──────────────────────────────────────────────────────────
+     Native <details>, damit es ohne Skript funktioniert und die Tastatur
+     es von Haus aus bedient. Das Pluszeichen wird aus zwei Strichen
+     gebaut — kein Glyph, kein Icon-Font. */
+
+  .gruppe summary::-webkit-details-marker { display: none; }
+  .gruppe summary { list-style: none; }
+
+  .gruppe__schalter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    padding: 0.875rem 0;
+    border-top: 1px solid var(--color-rule);
+    border-bottom: 1px solid var(--color-rule);
+    cursor: pointer;
+    transition: color 0.3s ease, border-color 0.3s ease;
+  }
+  .gruppe__schalter:hover { color: var(--color-accent); border-color: var(--color-rule-strong); }
+  .gruppe__schalter:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  .gruppe__text {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: inherit;
+  }
+
+  /* Plus, das beim Öffnen zum Minus wird. */
+  .gruppe__zeichen {
+    position: relative;
+    width: 12px;
+    height: 12px;
+    flex: none;
+  }
+  .gruppe__zeichen::before,
+  .gruppe__zeichen::after {
+    content: '';
+    position: absolute;
+    background-color: currentColor;
+    transition: transform 0.4s var(--ease-out-expo), opacity 0.3s linear;
+  }
+  .gruppe__zeichen::before { left: 0; top: 50%; width: 12px; height: 1px; margin-top: -0.5px; }
+  .gruppe__zeichen::after { top: 0; left: 50%; height: 12px; width: 1px; margin-left: -0.5px; }
+  .gruppe[open] .gruppe__zeichen::after { transform: scaleY(0); opacity: 0; }
+
+  .gruppe__inhalt { padding-top: 1.5rem; }
+  @media (prefers-reduced-motion: no-preference) {
+    .gruppe[open] .gruppe__inhalt { animation: aufklappen 0.5s var(--ease-out-expo); }
+    @keyframes aufklappen {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: none; }
+    }
+  }
+
+  /* Fortschritt der Seite, als Haarlinie unter der Kopfleiste. */
+  .progress {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    height: 1px;
+    width: 100%;
+    transform-origin: left;
+    transform: scaleX(var(--progress, 0));
+    background-color: var(--color-accent);
+  }
+
+  /* Der Hero-Titel: jedes Wort läuft einzeln hinter einer Kante hervor,
+     versetzt und mit einer Spur Unschärfe, die beim Ankommen aufgeht. */
+  .woerter__slot {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+  }
+  .woerter__slot:not(:last-child) { margin-right: 0.24em; }
+  .woerter__wort { display: inline-block; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html.js .woerter__wort {
+      transform: translateY(110%);
+      filter: blur(5px);
+      opacity: 0;
+      transition:
+        transform 1.05s var(--ease-out-expo),
+        filter 1.05s var(--ease-out-expo),
+        opacity 0.7s linear;
+      transition-delay: calc(var(--w, 0) * 65ms + 120ms);
+    }
+    html.js .woerter.is-in .woerter__wort {
+      transform: none;
+      filter: blur(0);
+      opacity: 1;
+    }
+  }
+
+  /* Überschriften laufen zeilenweise hinter einer Kante hervor, statt
+     wie alles andere zu faden. */
+  .reveal > span {
+    display: block;
+    overflow: hidden;
+  }
+  .reveal > span > span {
+    display: block;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html.js .reveal > span > span {
+      transform: translateY(105%);
+      transition: transform 1s var(--ease-out-expo);
+      transition-delay: calc(var(--line, 0) * 90ms + var(--rise-delay, 0ms));
+    }
+    html.js .reveal.is-in > span > span { transform: none; }
+    /* Eine Bewegung pro Element: wo die Zeile hervorläuft, wird nicht geblendet. */
+    html.js .reveal.rise { opacity: 1; transform: none; filter: none; }
+  }
+
+  /* Entrance: one authored moment, exponential ease-out, from a visible
+     default so nothing is ever hidden if the script never runs. */
+  .rise {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html.js .rise {
+      opacity: 0;
+      transform: translateY(1.25rem);
+      transition:
+        opacity 0.9s var(--ease-out-expo),
+        transform 0.9s var(--ease-out-expo),
+        filter 0.9s var(--ease-out-expo);
+      filter: blur(6px);
+      transition-delay: var(--rise-delay, 0ms);
+      will-change: opacity, transform, filter;
+    }
+    html.js .rise.is-in {
+      opacity: 1;
+      transform: none;
+      filter: blur(0);
+    }
+  }
+}

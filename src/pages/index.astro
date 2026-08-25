@@ -1,0 +1,52 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Leistungen from '../components/Leistungen.astro';
+import Referenzen from '../components/Referenzen.astro';
+import Team from '../components/Team.astro';
+import Globus from '../components/Globus.astro';
+import Stack from '../components/Stack.astro';
+import Kontakt from '../components/Kontakt.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout
+  titel="leam — Frontend, Full-Stack und KI-Automatisierung | Graz"
+  beschreibung="leam gestaltet und baut Landingpages, Websites und Webapps — auf Wunsch bis in den Backend-Stack — und automatisiert Abläufe mit KI. Studio aus Graz für KMU und EPU."
+>
+  <Header />
+  <main>
+    <Hero />
+    <Leistungen />
+    <Referenzen />
+    <Team />
+    <Globus />
+    <Stack />
+    <Kontakt />
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  // Die eine inszenierte Bewegung der Seite: Elemente steigen einmal auf,
+  // wenn sie in den Blick kommen. Danach wird der Beobachter abgemeldet.
+  const ziele = document.querySelectorAll<HTMLElement>('.rise, .woerter');
+  const reduziert = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!reduziert && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (eintraege) => {
+        for (const e of eintraege) {
+          if (!e.isIntersecting) continue;
+          e.target.classList.add('is-in');
+          io.unobserve(e.target);
+        }
+      },
+      { rootMargin: '0px 0px -12% 0px', threshold: 0.08 },
+    );
+    for (const z of ziele) io.observe(z);
+  } else {
+    for (const z of ziele) z.classList.add('is-in');
+  }
+</script>

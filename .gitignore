@@ -1,0 +1,59 @@
+# ── Abhängigkeiten ─────────────────────────────────────────────────────────
+node_modules/
+.pnp/
+.pnp.*
+
+# ── Build & Caches ─────────────────────────────────────────────────────────
+dist/
+.astro/
+.output/
+.cache/
+.vercel/
+.netlify/
+.wrangler/
+
+# ── Geheimnisse ────────────────────────────────────────────────────────────
+# Nichts davon gehört jemals in die Historie: einmal committet, ist ein
+# Schlüssel verbrannt — auch nach dem Löschen des Commits.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+id_rsa*
+.npmrc
+.netrc
+secrets.json
+credentials.json
+service-account*.json
+
+# ── Lokale Werkzeug-Konfiguration (rechnergebunden, teils mit Tokens) ──────
+*.local.json
+.claude/settings.local.json
+
+# ── Cloudflare ─────────────────────────────────────────────────────────────
+# .dev.vars hält den echten Resend-Schlüssel für die lokale Entwicklung.
+.dev.vars
+.dev.vars.*
+!.dev.vars.example
+.wrangler/
+
+# ── Logs & Laufzeitmüll ────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pid
+*.pid.lock
+
+# ── Editor & Betriebssystem ────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+*~

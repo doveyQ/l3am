@@ -1,0 +1,7 @@
+# Kopie als .dev.vars anlegen — die echte Datei ist per .gitignore ausgeschlossen.
+# In Produktion stehen dieselben Namen unter
+# Cloudflare Pages → Settings → Environment variables (RESEND_API_KEY als Secret).
+
+RESEND_API_KEY="re_dein_schluessel"
+KONTAKT_MAIL="hallo@l3am.dev"
+RESEND_FROM="leam Website <formular@l3am.dev>"

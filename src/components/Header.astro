@@ -1,0 +1,148 @@
+---
+import { referenzen } from '../data/referenzen';
+
+const nav = [
+  { href: '#leistungen', label: 'Leistungen' },
+  ...(referenzen.length > 0 ? [{ href: '#referenzen', label: 'Referenzen' }] : []),
+  { href: '#team', label: 'Team' },
+  { href: '#reichweite', label: 'Reichweite' },
+  { href: '#stack', label: 'Stack' },
+];
+---
+
+<header
+  class="sticky top-0 z-40 border-b border-rule bg-ground/85 backdrop-blur-md"
+  data-header
+>
+  <span class="progress" data-progress aria-hidden="true"></span>
+  <div class="shell flex h-16 items-center justify-between gap-4">
+    <a
+      href="#inhalt"
+      class="group flex items-baseline gap-2.5 text-ink no-underline"
+      aria-label="leam — zum Seitenanfang"
+    >
+      <span class="text-[1.0625rem] font-medium tracking-[-0.05em]">leam</span>
+      <span
+        class="hidden font-mono text-[0.625rem] tracking-[0.1em] text-ink-4 transition-colors duration-300 group-hover:text-ink-2 sm:inline"
+        >L3AM.DEV</span
+      >
+    </a>
+
+    <nav aria-label="Hauptnavigation" class="hidden items-center gap-8 md:flex">
+      {
+        nav.map((item) => (
+          <a
+            href={item.href}
+            class="relative py-2 text-[0.8125rem] text-ink-3 no-underline transition-colors duration-300 hover:text-accent after:absolute after:bottom-1 after:left-0 after:h-px after:w-full after:origin-right after:scale-x-0 after:bg-accent after:transition-transform after:duration-500 after:ease-[cubic-bezier(0.16,1,0.3,1)] hover:after:origin-left hover:after:scale-x-100"
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <a
+        href="#kontakt"
+        class="group inline-flex items-center gap-2 border border-accent bg-accent px-4 py-2 text-[0.8125rem] text-ground no-underline transition-colors duration-300 hover:bg-ground hover:text-accent"
+      >
+        Erstgespräch
+        <span
+          class="inline-block h-px w-3 bg-current transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:w-5"
+          aria-hidden="true"></span>
+      </a>
+
+      <!-- Wortmarke statt Hamburger: passt zur technischen Sprache der Seite
+           und sagt im Klartext, was der Knopf tut. -->
+      <button
+        type="button"
+        data-menu-toggle
+        aria-expanded="false"
+        aria-controls="mobil-navigation"
+        class="border border-rule-strong px-3 py-2.5 font-mono text-[0.6875rem] tracking-[0.08em] text-ink-3 transition-colors duration-300 hover:border-accent hover:text-accent md:hidden"
+      >
+        <span data-menu-label>MENÜ</span>
+      </button>
+    </div>
+  </div>
+
+  <nav
+    id="mobil-navigation"
+    aria-label="Navigation, mobil"
+    data-menu-panel
+    hidden
+    class="border-t border-rule bg-ground md:hidden"
+  >
+    <div class="shell">
+      {
+        [...nav, { href: '#kontakt', label: 'Kontakt' }].map((item) => (
+          <a
+            href={item.href}
+            data-menu-link
+            class="flex items-center justify-between border-b border-rule py-4 text-[1.0625rem] text-ink no-underline last:border-b-0 active:bg-accent-wash active:text-accent"
+          >
+            {item.label}
+            <span class="h-px w-6 bg-rule-strong" aria-hidden="true" />
+          </a>
+        ))
+      }
+    </div>
+  </nav>
+</header>
+
+<script>
+  // Fortschritt der Seite als Haarlinie unter der Kopfleiste.
+  const bar = document.querySelector<HTMLElement>('[data-progress]');
+  if (bar) {
+    let ticking = false;
+    const zeichnen = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const p = max > 0 ? Math.min(1, window.scrollY / max) : 0;
+      bar.style.setProperty('--progress', String(p));
+      ticking = false;
+    };
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(zeichnen);
+      },
+      { passive: true },
+    );
+    zeichnen();
+  }
+
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const panel = document.querySelector<HTMLElement>('[data-menu-panel]');
+  const label = document.querySelector<HTMLElement>('[data-menu-label]');
+
+  if (toggle && panel && label) {
+    const setzen = (offen: boolean) => {
+      panel.hidden = !offen;
+      toggle.setAttribute('aria-expanded', String(offen));
+      label.textContent = offen ? 'SCHLIESSEN' : 'MENÜ';
+    };
+
+    toggle.addEventListener('click', () => {
+      setzen(toggle.getAttribute('aria-expanded') !== 'true');
+    });
+
+    for (const link of panel.querySelectorAll('[data-menu-link]')) {
+      link.addEventListener('click', () => setzen(false));
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setzen(false);
+        toggle.focus();
+      }
+    });
+
+    // Beim Wechsel auf Desktop darf kein offenes Panel zurückbleiben.
+    const mq = window.matchMedia('(min-width: 768px)');
+    mq.addEventListener('change', (e) => {
+      if (e.matches) setzen(false);
+    });
+  }
+</script>

@@ -1,0 +1,54 @@
+---
+import { gruender } from '../data/gruender';
+---
+
+<section id="team" class="border-b border-rule">
+  <div class="shell">
+    <div class="grid gap-x-16 gap-y-6 border-b border-rule py-16 md:py-24 lg:grid-cols-12">
+      <h2 class="section-head reveal rise lg:col-span-7">
+        <span><span>Drei Leute.</span></span>
+        <span><span class="text-ink-3" style="--line:1">Kein Account-Management.</span></span>
+      </h2>
+      <div class="rise max-w-[38ch] self-end lg:col-span-5" style="--rise-delay:180ms">
+        <p class="leading-[1.6] text-ink-3">
+          Wer bei uns das Erstgespräch führt, schreibt später auch den Code.
+        </p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:-mx-7 md:grid-cols-3">
+      {
+        gruender.map((g, i) => (
+          <article
+            class="rise group flex flex-col border-b border-rule py-10 md:border-b-0 md:px-7 md:py-14 md:not-last:border-r"
+            style={`--rise-delay:${i * 110}ms`}
+          >
+            <div class="relative overflow-hidden bg-tint">
+              <img
+                src={g.bild}
+                alt={g.alt}
+                width="900"
+                height="1125"
+                loading="lazy"
+                decoding="async"
+                class="aspect-[4/5] w-full object-cover grayscale transition-[filter,transform] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.02] group-hover:grayscale-0"
+              />
+            </div>
+
+            {g.name && (
+              <p class="mt-7 text-[1.0625rem] font-medium tracking-[-0.02em] text-ink">{g.name}</p>
+            )}
+
+            <h3
+              class={`text-[1.0625rem] tracking-[-0.02em] text-accent ${g.name ? 'mt-1' : 'mt-7 font-medium'}`}
+            >
+              {g.fokus}
+            </h3>
+
+            <p class="mt-4 max-w-[38ch] text-[0.9375rem] leading-[1.6] text-ink-3">{g.arbeit}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
